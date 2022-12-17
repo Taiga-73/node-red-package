@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Taiga-73/node-red-package#readme",
   "dependencies": {
-    "node-red": "^3.0.2"
+    "node-red": "^3.0.2",
+    "node-red-contrib-teachable-machine": "^1.4.0"
   }
 }
