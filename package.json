@@ -1,14 +1,24 @@
 {
-    "name": "node-red-express",
-    "description": "A simple node-red & express server",
-    "version": "0.0.1",
-    "private": false,
-    "dependencies": {
-        "express": "^4.18.1",
-        "moment": "^2.29.4",
-        "node-red": "^3.0.2"
-    },
-    "scripts": {
-        "start": "node index.js"
-    }
+  "name": "teachablebot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node node_modules/node-red/red.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Taiga-73/node-red-package.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Taiga-73/node-red-package/issues"
+  },
+  "homepage": "https://github.com/Taiga-73/node-red-package#readme",
+  "dependencies": {
+    "node-red": "^3.0.2"
+  }
 }
