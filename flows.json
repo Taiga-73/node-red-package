@@ -1,0 +1,121 @@
+[
+    {
+        "id": "d33976987429da62",
+        "type": "tab",
+        "label": "フロー 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "56b37552bff458c6",
+        "type": "http in",
+        "z": "d33976987429da62",
+        "name": "",
+        "url": "/webhook",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 120,
+        "y": 60,
+        "wires": [
+            [
+                "2171604ac5ef82ea"
+            ]
+        ]
+    },
+    {
+        "id": "2171604ac5ef82ea",
+        "type": "function",
+        "z": "d33976987429da62",
+        "name": "メッセージの解析",
+        "func": "const messageID = msg.payload.events[0].message.id;\nconst replyToken = msg.payload.events[0].replyToken;\n\nmsg.messageID = messageID;\nmsg.replyToken = replyToken;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 60,
+        "wires": [
+            [
+                "c832468b9a686ac7"
+            ]
+        ]
+    },
+    {
+        "id": "c832468b9a686ac7",
+        "type": "http request",
+        "z": "d33976987429da62",
+        "name": "",
+        "method": "GET",
+        "ret": "bin",
+        "paytoqs": "ignore",
+        "url": "https://api-data.line.me/v2/bot/message/{{{messageID}}}/content",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "bearer",
+        "senderr": false,
+        "headers": [],
+        "x": 310,
+        "y": 140,
+        "wires": [
+            [
+                "094ad57cf1658bd9"
+            ]
+        ]
+    },
+    {
+        "id": "6f1927c9ef83c92f",
+        "type": "ReplyMessage",
+        "z": "d33976987429da62",
+        "name": "",
+        "replyMessage": "",
+        "x": 720,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "094ad57cf1658bd9",
+        "type": "teachable machine",
+        "z": "d33976987429da62",
+        "name": "画像判別",
+        "mode": "online",
+        "modelUri": "https://teachablemachine.withgoogle.com/models/kCBGQLPEG/",
+        "localModel": "teachable_model",
+        "output": "best",
+        "activeThreshold": false,
+        "threshold": 80,
+        "activeMaxResults": false,
+        "maxResults": 3,
+        "passThrough": true,
+        "x": 500,
+        "y": 140,
+        "wires": [
+            [
+                "0502a68621323647"
+            ]
+        ]
+    },
+    {
+        "id": "0502a68621323647",
+        "type": "function",
+        "z": "d33976987429da62",
+        "name": "結果の取得",
+        "func": "const className = msg.payload[0].class;\nmsg.payload = {};\nmsg.payload.events = [\n    {\n        \"type\": \"message\",\n        \"replyToken\": msg.replyToken,\n        \"message\": {\n            \"type\": \"text\",\n            \"text\": `この画像の主な印象語は、「${className}」です。`\n        }\n    }\n];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 220,
+        "wires": [
+            [
+                "6f1927c9ef83c92f"
+            ]
+        ]
+    }
+]
